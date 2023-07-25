@@ -118,6 +118,152 @@ app.get('/items', (req, res) => {
     });
   });
 
+
+app.post('/new_item', (req, res) => {
+  const newItem = req.body;
+  // console.log(newItem)
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const existingItem = items.find((item) => item['Перший рівень'] === newItem['Перший рівень']);
+
+    if (existingItem) {
+      res.status(409).json({ message: 'Item already exists' });
+    } else {
+      items.push(newItem);
+      fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ message: 'Internal Server Error' });
+          return;
+        }
+        res.status(201).json(newItem);
+      });
+    }
+  });
+});
+
+
+app.post('/new_item2', (req, res) => {
+  const newItem = req.body;
+  // console.log(newItem)
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const existingItem = items.find((item) => item['Перший рівень'] === newItem['Перший рівень']);
+    // res.json(existingItem)
+    if (!existingItem['Масив елементів другого рівня']) {
+      existingItem['Масив елементів другого рівня'] = []; // Create an empty array
+    }
+
+    // existingItem['Масив елементів другого рівня'].push(newItem);
+    // console.log(existingItem)
+    // res.json(existingItem)
+    if (!existingItem) {
+      res.status(400).json({ message: 'Item already exists' });
+    } else if (newItem['Другий рівень'] === ''){
+      res.status(400).json({ message: 'This object doesen\'t have [\'Другий рівень\'] ' });
+    } else {
+      existingItem['Масив елементів другого рівня'].push(newItem);
+      res.json(existingItem);
+      fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ message: 'Internal Server Error' });
+          return;
+        }
+        // res.status(201).json(newItem);
+      });
+    }
+  });
+});
+
+app.post('/new_item3', (req, res) => {
+  const newItem = req.body;
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const first_element = items.find((item) => item['Перший рівень'] === newItem['Перший рівень']);
+    second_elements = first_element['Масив елементів другого рівня'];
+    // res.json(seconds_element);
+    second_element = second_elements.find((item) => item['Другий рівень'] === newItem['Другий рівень']);
+    // res.json(second_element);
+    if (!second_element['Масив елементів третього рівня']) {
+      second_element['Масив елементів третього рівня'] = []; // Create an empty array
+    }
+
+    if (!second_element) {
+      res.status(400).json({ message: 'Item already exists' });
+    } else if (newItem['Другий рівень'] === ''){
+      res.status(400).json({ message: 'This object doesen\'t have [\'Третій рівень\'] ' });
+    } else {
+      second_element['Масив елементів третього рівня'].push(newItem);
+      res.json(first_element);
+      fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ message: 'Internal Server Error' });
+          return;
+        }
+        // res.status(201).json(newItem);
+      });
+    }
+  });
+});
+
+
+app.post('/new_item4', (req, res) => {
+  const newItem = req.body;
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const first_element = items.find((item) => item['Перший рівень'] === newItem['Перший рівень']);
+    second_elements = first_element['Масив елементів другого рівня'];
+    second_element = second_elements.find((item) => item['Другий рівень'] === newItem['Другий рівень']);
+    third_elements = second_element['Масив елементів третього рівня'];
+    // res.json(third_elements);
+    third_element = third_elements.find((item) => item['Третій рівень'] === newItem['Третій рівень']);
+    // res.json(third_element);
+
+    if (!third_element['Масив елементів четвертого рівня']) {
+      third_element['Масив елементів четвертого рівня'] = []; // Create an empty array
+    }
+    if (!third_element) {
+      res.status(400).json({ message: 'Item already exists' });
+    } else if (newItem['Четвертий рівень'] === ''){
+      res.status(400).json({ message: 'This object doesen\'t have [\'Четвертий рівень\'] ' });
+    } else {
+      third_element['Масив елементів четвертого рівня'].push(newItem);
+      res.json(first_element);
+      fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ message: 'Internal Server Error' });
+          return;
+        }
+        // res.status(201).json(newItem);
+      });
+    }
+
+  });
+});
+
   // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {

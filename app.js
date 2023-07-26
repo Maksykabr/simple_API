@@ -264,6 +264,166 @@ app.post('/new_item4', (req, res) => {
   });
 });
 
+
+app.put('/update_first_level/:id', (req, res) => {
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const first_id = req.params.id;
+    const newItem = req.body;
+    const first_object = items.find((item) => item['Перший рівень'] === first_id);
+    first_object['Перший рівень'] = newItem['Перший рівень'];
+    first_object['Другий рівень'] = newItem['Другий рівень'];
+    first_object['Третій рівень'] = newItem['Третій рівень'];
+    first_object['Четвертий рівень'] = newItem['Четвертий рівень'];
+    // res.json(first_object);
+
+    if (first_object) {
+      res.json(first_object);
+
+    } else {
+      res.json({ message: 'Object not found' });
+    }
+    fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+      }
+      // res.status(201).json(newItem);
+    });
+  });
+});
+
+
+
+app.put('/update_second_level/:first_id/:second_id', (req, res) => {
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const first_id = req.params.first_id;
+    const second_id = req.params.second_id;
+    const newItem = req.body;
+    const first_object = items.find((item) => item['Перший рівень'] === first_id);
+    second_elements = first_object['Масив елементів другого рівня'];
+    // res.json(second_elements);
+    second_element = second_elements.find((item) => item['Другий рівень'] === second_id);
+    // res.json(second_element);
+    // second_element['Перший рівень'] = newItem['Перший рівень'];
+    second_element['Другий рівень'] = newItem['Другий рівень'];
+    second_element['Третій рівень'] = newItem['Третій рівень'];
+    second_element['Четвертий рівень'] = newItem['Четвертий рівень'];
+    // res.json(second_element);
+    if (first_object) {
+      res.json(first_object);
+
+    } else {
+      res.json({ message: 'Object not found' });
+    }
+    fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+      }
+      // res.status(201).json(newItem);
+    });
+  });
+});
+
+
+app.put('/update_third_level/:first_id/:second_id/:third_id', (req, res) => {
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const first_id = req.params.first_id;
+    const second_id = req.params.second_id;
+    const third_id = req.params.third_id;
+    const newItem = req.body;
+
+    const first_object = items.find((item) => item['Перший рівень'] === first_id);
+    second_elements = first_object['Масив елементів другого рівня'];
+    second_element = second_elements.find((item) => item['Другий рівень'] === second_id);
+    third_elements = second_element['Масив елементів третього рівня'];
+    third_element = third_elements.find((item) => item['Третій рівень'] === third_id);
+
+    third_element['Третій рівень'] = newItem['Третій рівень'];
+    third_element['Четвертий рівень'] = newItem['Четвертий рівень'];
+    // res.json(third_element);
+
+    if (third_element) {
+      res.json(third_element);
+
+    } else {
+      res.json({ message: 'Object not found' });
+    }
+    fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+      }
+      // res.status(201).json(newItem);
+    });
+  });
+});
+
+
+app.put('/update_fourth_level/:first_id/:second_id/:third_id/:fourth_id', (req, res) => {
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const first_id = req.params.first_id;
+    const second_id = req.params.second_id;
+    const third_id = req.params.third_id;
+    const fourth_id = req.params.fourth_id;
+    const newItem = req.body;
+
+    const first_object = items.find((item) => item['Перший рівень'] === first_id);
+    second_elements = first_object['Масив елементів другого рівня'];
+    second_element = second_elements.find((item) => item['Другий рівень'] === second_id);
+    third_elements = second_element['Масив елементів третього рівня'];
+    third_element = third_elements.find((item) => item['Третій рівень'] === third_id);
+    fourth_elements = third_element['Масив елементів четвертого рівня'];
+    fourth_element = fourth_elements.find((item) => item['Четвертий рівень'] === fourth_id);
+
+    fourth_element['Четвертий рівень'] = newItem['Четвертий рівень'];
+    // res.json(fourth_element);
+
+    if (fourth_element) {
+      res.json(fourth_element);
+
+    } else {
+      res.json({ message: 'Object not found' });
+    }
+    fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+      }
+      // res.status(201).json(newItem);
+    });
+
+  });
+});
+
   // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {

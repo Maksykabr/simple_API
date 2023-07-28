@@ -424,6 +424,180 @@ app.put('/update_fourth_level/:first_id/:second_id/:third_id/:fourth_id', (req, 
   });
 });
 
+
+app.delete('/delete_first_item/:first_id', (req, res) => {
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+
+    const items = JSON.parse(data);
+    const first_id = req.params.first_id;
+    // console.log(first_id)
+    const itemIndexToDelete = items.findIndex((item) => item['Перший рівень'] == first_id);
+    // console.log(itemIndexToDelete)
+    if (itemIndexToDelete === -1) {
+      // console.log(itemIndexToDelete)
+      // Item not found
+      res.status(404).json({ message: 'Object not found' });
+      return;
+    }
+
+    new_items = items.filter((item, index) => index !== itemIndexToDelete);
+
+      // Save the updated array back to the file
+      fs.writeFile(filePath, JSON.stringify(new_items, null, 2), (err) => {
+        if (err) {
+          console.error(err);
+          res.status(500).json({ message: 'Internal Server Error' });
+          return;
+        }
+
+        res.json({ message: 'Object deleted successfully' });
+      });
+  });
+});
+
+app.delete('/delete_second_item/:first_id/:second_id', (req, res) => {
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+
+    const items = JSON.parse(data);
+    const first_id = req.params.first_id;
+    const second_id = req.params.second_id;
+
+
+    const first_object = items.find((item) => item['Перший рівень'] === first_id);
+    const second_elements = first_object['Масив елементів другого рівня'];
+    const itemIndexToDelete = second_elements.findIndex((item) => item['Другий рівень'] == second_id);
+    // const itemIndexToDelete = items.findIndex((item) => item['Перший рівень'] == first_id);
+    // res.json({ message: 'element has founded' });
+    console.log(itemIndexToDelete)
+
+    if (itemIndexToDelete === -1) {
+      // console.log(itemIndexToDelete)
+      // Item not found
+      res.status(404).json({ message: 'Object not found' });
+      return;
+    }
+    second_elements.splice(itemIndexToDelete, 1);
+    res.json(second_elements)
+    fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+      }
+
+      res.json({ message: 'Object deleted successfully' });
+    });
+  });
+});
+
+app.delete('/delete_third_item/:first_id/:second_id/:third_id', (req, res) => {
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+    const items = JSON.parse(data);
+    const first_id = req.params.first_id;
+    const second_id = req.params.second_id;
+    const third_id = req.params.third_id;
+
+    const first_object = items.find((item) => item['Перший рівень'] == first_id);
+    console.log(first_object)
+    const second_elements = first_object['Масив елементів другого рівня'];
+    // console.log(first_object)
+    const second_element = second_elements.find((item) => item['Другий рівень'] == second_id);
+    const third_elements = second_element['Масив елементів третього рівня'];
+
+    const itemIndexToDelete = third_elements.findIndex((item) => item['Третій рівень'] == third_id);
+
+    if (itemIndexToDelete === -1) {
+      res.status(404).json({ message: 'Object not found' });
+      return;
+    }
+
+    third_elements.splice(itemIndexToDelete, 1);
+
+    fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+      }
+
+      res.json({ message: 'Object deleted successfully' });
+    });
+  });
+});
+
+
+app.delete('/delete_fourth_item/:first_id/:second_id/:third_id/:fourth_id', (req, res) => {
+  fs.readFile(filePath, 'utf8', (error, data) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      return;
+    }
+
+    const items = JSON.parse(data);
+    const first_id = req.params.first_id;
+    const second_id = req.params.second_id;
+    const third_id = req.params.third_id;
+    const fourth_id = req.params.fourth_id;
+
+    const first_object = items.find((item) => item['Перший рівень'] == first_id);
+    if (!first_object) {
+      res.status(404).json({ message: 'Object not found1' });
+      return;
+    }
+
+    const second_elements = first_object['Масив елементів другого рівня'];
+    const second_element = second_elements.find((item) => item['Другий рівень'] == second_id);
+    if (!second_element) {
+      res.status(404).json({ message: 'Object not found2' });
+      return;
+    }
+
+    const third_elements = second_element['Масив елементів третього рівня'];
+    const third_element = third_elements.find((item) => item['Третій рівень'] == third_id);
+    if (!third_element) {
+      res.status(404).json({ message: 'Object not found3' });
+      return;
+    }
+
+    const fourth_elements = third_element['Масив елементів четвертого рівня'];
+    const itemIndexToDelete = fourth_elements.findIndex((item) => item['Четвертий рівень'] == fourth_id);
+    if (itemIndexToDelete === -1) {
+      res.status(404).json({ message: 'Object not found4' });
+      return;
+    }
+
+    fourth_elements.splice(itemIndexToDelete, 1);
+
+    fs.writeFile(filePath, JSON.stringify(items, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal Server Error' });
+        return;
+      }
+
+      res.json({ message: 'Object deleted successfully' });
+    });
+  });
+});
+
+
+
   // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {

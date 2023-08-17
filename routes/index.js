@@ -5,6 +5,11 @@ const fs = require('fs');
 const filePath = './data/data.json'
 
 // GET
+router.get('/' , (req, res) =>{
+  res.render('index.html', { title: 'My Express Project' });
+});
+
+
 router.get('/all_items', (req, res) => {
     fs.readFile(filePath, 'utf8', (error, data) => {
         if (error) {

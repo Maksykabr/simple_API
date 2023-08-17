@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "builds": [
+      { "src": "app.js", "use": "@vercel/node" }
+    ],
+    "routes": [
+      { "src": "/all_items", "dest": "/all_items" },
+      { "src": "/get_firstLevel/:first_id", "dest": "/get_firstLevel" },
+      { "src": "/get_secondLevel/:first_id/:second_id", "dest": "/get_secondLevel" },
+      { "src": "/get_thirdLevel/:first_id/:second_id/:third_id", "dest": "/get_thirdLevel" },
+      { "src": "/get_fourthLevel/:first_id/:second_id/:third_id/:fourth_id", "dest": "/get_fourthLevel" },
+      { "src": "/post_firstLevel", "dest": "/post_firstLevel", "methods": ["POST"] },
+      { "src": "/post_secondLevel", "dest": "/post_secondLevel", "methods": ["POST"] },
+      { "src": "/post_thirdLevel", "dest": "/post_thirdLevel", "methods": ["POST"] },
+      { "src": "/post_fourthLevel", "dest": "/post_fourthLevel", "methods": ["POST"] },
+      { "src": "/(.*)", "dest": "/app.js" }
+    ]
+  }
+  

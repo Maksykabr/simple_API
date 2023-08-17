@@ -12,6 +12,9 @@ app.use(express.static('dist'));
 app.use('/', indexRouter);
 
 
+
+
+
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {

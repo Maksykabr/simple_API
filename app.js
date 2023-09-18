@@ -643,6 +643,7 @@ const delete_fourthLevel = {
 
 const cats = {
     speak: function(args, callback) {
+      console.log('done')
         callback(null, 'meow')
     }
 };
